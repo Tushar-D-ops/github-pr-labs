@@ -21,3 +21,15 @@ jobs:
           echo "Action: ${{ github.event.action }}"
           echo "Author: ${{ github.event.pull_request.user.login }}"
           echo "PR Body: ${{ github.event.pull_request.body }}"
+      
+      - name: Detect fix PR
+      if: startsWith(github.event.pull_request.title, 'fix:')
+      run: echo "CATEGORY = fix"
+
+      - name: Detect feature PR
+      if: startsWith(github.event.pull_request.title, 'feat:')
+      run: echo "CATEGORY = feature"
+
+      - name: Detect docs PR
+      if: startsWith(github.event.pull_request.title, 'docs:')
+      run: echo "CATEGORY = documentation"
