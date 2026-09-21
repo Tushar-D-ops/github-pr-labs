@@ -1,0 +1,51 @@
+name: PR Learning
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened,edited]
+
+permissions:
+  pull-requests: write
+
+
+jobs:
+  inspect-pr:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Print PR information
+        run: |
+          echo "PR Number: ${{ github.event.pull_request.number }}"
+          echo "PR Title: ${{ github.event.pull_request.title }}"
+          echo "Source Branch: ${{ github.event.pull_request.head.ref }}"
+          echo "Target Branch: ${{ github.event.pull_request.base.ref }}"
+
+      - name: Inspect event
+        run: |
+          echo "Action: ${{ github.event.action }}"
+          echo "Author: ${{ github.event.pull_request.user.login }}"
+          echo "PR Body: ${{ github.event.pull_request.body }}"
+      
+      - name: Add fix label
+        if: startsWith(github.event.pull_request.title, 'fix:')
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          gh pr edit ${{ github.event.pull_request.number }} --add-label "fix"
+
+      - name: Add feature label
+        if: startsWith(github.event.pull_request.title, 'feat:')
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          gh pr edit ${{ github.event.pull_request.number }} --add-label "feature"
+
+      - name: Add documentation label
+        if: startsWith(github.event.pull_request.title, 'docs:')
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          gh pr edit ${{ github.event.pull_request.number }} --add-label "documentation"

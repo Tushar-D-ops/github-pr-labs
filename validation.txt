@@ -1,0 +1,5 @@
+User validation fix
+
+Previously empty usernames were accepted.
+
+Now empty usernames are rejected.yess
