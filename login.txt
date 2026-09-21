@@ -3,3 +3,4 @@ Login feature
 - Username
 - Password
 - Authentication
+- Remember me
