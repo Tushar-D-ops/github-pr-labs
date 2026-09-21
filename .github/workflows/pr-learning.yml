@@ -2,7 +2,11 @@ name: PR Learning
 
 on:
   pull_request:
-    types: [opened, synchronize, reopened]
+    types: [opened, synchronize, reopened,edited]
+
+permissions:
+  pull-requests: write
+
 
 jobs:
   inspect-pr:
