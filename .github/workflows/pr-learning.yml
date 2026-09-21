@@ -22,14 +22,26 @@ jobs:
           echo "Author: ${{ github.event.pull_request.user.login }}"
           echo "PR Body: ${{ github.event.pull_request.body }}"
       
-      - name: Detect fix PR
+      - name: Add fix label
         if: startsWith(github.event.pull_request.title, 'fix:')
-        run: echo "CATEGORY = fix"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          gh pr edit ${{ github.event.pull_request.number }} --add-label "fix"
 
-      - name: Detect feature PR
+      - name: Add feature label
         if: startsWith(github.event.pull_request.title, 'feat:')
-        run: echo "CATEGORY = feature"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          gh pr edit ${{ github.event.pull_request.number }} --add-label "feature"
 
-      - name: Detect docs PR
+      - name: Add documentation label
         if: startsWith(github.event.pull_request.title, 'docs:')
-        run: echo "CATEGORY = documentation"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          gh pr edit ${{ github.event.pull_request.number }} --add-label "documentation"
